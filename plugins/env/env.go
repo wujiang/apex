@@ -3,7 +3,9 @@ package env
 
 import (
 	"encoding/json"
-	"time"
+	"io/ioutil"
+	"os"
+	"path/filepath"
 
 	"github.com/jpillora/archive"
 
@@ -14,8 +16,8 @@ func init() {
 	function.RegisterPlugin("env", &Plugin{})
 }
 
-// FileName of file with environment variables.
-const FileName = ".env.json"
+// Filename of file with environment variables.
+const Filename = ".env.json"
 
 // Plugin implementation.
 type Plugin struct{}
@@ -28,10 +30,23 @@ func (p *Plugin) Build(fn *function.Function, zip *archive.Archive) error {
 
 	fn.Log.WithField("env", fn.Environment).Debug("adding env")
 
-	env, err := json.Marshal(fn.Environment)
+	b, err := json.Marshal(fn.Environment)
 	if err != nil {
 		return err
 	}
 
-	return zip.AddBytesMTime(FileName, env, time.Unix(0, 0))
+	path := filepath.Join(fn.Path, Filename)
+	fn.Log.WithField("file", path).Debug("create")
+	return ioutil.WriteFile(path, b, 0666)
+}
+
+// Clean removes the environment file.
+func (p *Plugin) Clean(fn *function.Function) error {
+	if len(fn.Environment) == 0 {
+		return nil
+	}
+
+	path := filepath.Join(fn.Path, Filename)
+	fn.Log.WithField("file", path).Debug("remove")
+	return os.Remove(path)
 }

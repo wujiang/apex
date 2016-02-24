@@ -3,7 +3,6 @@ package hooks
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 
 	"github.com/apex/log"
@@ -58,7 +57,6 @@ func (p *Plugin) run(hook, command string, fn *function.Function) error {
 	}).Debug("hook")
 
 	cmd := exec.Command("sh", "-c", command)
-	cmd.Env = os.Environ()
 	cmd.Dir = fn.Path
 
 	b, err := cmd.CombinedOutput()

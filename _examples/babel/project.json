@@ -1,0 +1,6 @@
+{
+  "name": "babel",
+  "description": "Node.js Babel (using browserify) example project",
+  "role": "arn:aws:iam::293503197324:role/lambda",
+  "runtime": "babel"
+}

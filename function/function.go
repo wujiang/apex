@@ -37,8 +37,9 @@ var defaultPlugins = []string{
 	"python",
 	"nodejs",
 	"java",
-	"hooks",
 	"env",
+	"babel",
+	"hooks",
 	"shim",
 }
 

@@ -73,7 +73,7 @@ func (p *Plugin) Build(fn *function.Function, zip *archive.Archive) error {
 		HandleFile   string
 		HandleMethod string
 	}{
-		EnvFile:      env.FileName,
+		EnvFile:      env.Filename,
 		HandleFile:   file,
 		HandleMethod: method,
 	})
